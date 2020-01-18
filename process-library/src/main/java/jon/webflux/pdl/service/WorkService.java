@@ -34,8 +34,8 @@ public class WorkService {
 					step.getRelationship().setParentId(process.getId());
 					return addRelationship(step.getRelationship());
 				})
-				.flatMap((ProcessRelationship r) -> processRepository.findById(r.getChildId())
-						.map((Process p) -> new Step(r.getSequence(), p, r)))
+				.flatMap(r -> processRepository.findById(r.getChildId())
+						.map(p -> new Step(r.getSequence(), p, r)))
 				.collect(Collectors.toSet())
 				.map(steps -> new Work(process, new TreeSet<Step>(steps)));
 			});
