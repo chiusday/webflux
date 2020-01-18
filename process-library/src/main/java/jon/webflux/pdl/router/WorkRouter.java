@@ -16,6 +16,10 @@ public class WorkRouter {
 		return RouterFunctions
 				.route(RequestPredicates.POST("/relationship")
 							.and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), 
-						handler::addRelationship);
+						handler::addRelationship)
+				.andRoute(RequestPredicates.POST("/work")
+						.and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
+						handler::addWork)
+				;
 	}
 }
