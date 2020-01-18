@@ -4,6 +4,6 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 import jon.webflux.pdl.model.Process;
 
-public interface IProcessRepository extends ReactiveMongoRepository<Process, Long>{
+public interface IProcessRepository extends ReactiveMongoRepository<Process, String>{
 
 }

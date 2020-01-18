@@ -28,15 +28,17 @@ public class WorkService {
 	
 	public Mono<Work> addWork(Work work) {
 		return processRepository.save(new Process(work))
-				.flatMap(process -> {
-					return Flux.just(work.getSteps().stream().toArray(Step[]::new))
-					.flatMap(step -> {
-						step.getRelationship().setParentId(process.getId());
-						return addRelationship(step.getRelationship())
-						.map(relation -> new Step(relation.getSequence(), step, relation));
-					})
-					.collect(Collectors.toSet())
-					.map(steps -> new Work(process, new TreeSet<Step>(steps)));
-				});
+			.flatMap(process -> {
+				return Flux.just(work.getSteps().stream().toArray(Step[]::new))
+				.flatMap(step -> {
+					step.getRelationship().setParentId(process.getId());
+					return addRelationship(step.getRelationship());
+				})
+				.flatMap((ProcessRelationship r) -> processRepository.findById(r.getChildId())
+						.map((Process p) -> new Step(r.getSequence(), p, r)))
+				.collect(Collectors.toSet())
+				.map(steps -> new Work(process, new TreeSet<Step>(steps)));
+			});
 	}
+	
 }
