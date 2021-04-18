@@ -29,3 +29,6 @@ hs_err_pid*
 /.metadata/
 /bin
 *.DS_Store
+/process-library/process-library.iml
+.idea/
+*.iml
